@@ -1,6 +1,11 @@
 ---
 name: development-team
-description: "Plan and execute non-trivial software changes without rushing into code. Use for features, bug fixes, refactors, migrations, integrations, or configuration changes when the agent must understand existing behavior, choose boundaries, coordinate multiple modules, or produce reliable verification. Start with a read-before-write brief, scale rigor by risk, pause only for material user-owned decisions, and finish with fresh evidence and explicit unknowns. Do not invoke for purely mechanical edits that require no investigation or design."
+description: "Improves non-trivial software changes by requiring sufficient system understanding, explicit boundaries, risk-proportional decisions, and fresh verification evidence. Use for feature implementation, bug fixes, refactors, migrations, integrations, or configuration changes that can affect behavior, contracts, data, or multiple modules. Do not use for read-only explanation, standalone review, or purely mechanical edits."
+license: MIT
+compatibility: "Designed for coding agents that support Agent Skills and can inspect project files, edit code, and run verification commands."
+metadata:
+  author: "https://github.com/FlowLeev"
+  version: "1.1.0"
 ---
 
 # 开发团队

@@ -1,16 +1,16 @@
 ---
 name: development-team
-description: "Improves non-trivial software changes by requiring sufficient system understanding, explicit boundaries, risk-proportional decisions, and fresh verification evidence. Use for feature implementation, bug fixes, refactors, migrations, integrations, or configuration changes that can affect behavior, contracts, data, or multiple modules. Do not use for read-only explanation, standalone review, or purely mechanical edits."
+description: "Guides non-trivial software creation and change with deliberate design and evidence-based verification. Use when starting a new project or service, or implementing features, bug fixes, refactors, migrations, integrations, or configuration changes that affect behavior, contracts, data, or multiple modules. Do not use for read-only explanation, standalone review, or mechanical edits."
 license: MIT
 compatibility: "Designed for coding agents that support Agent Skills and can inspect project files, edit code, and run verification commands."
 metadata:
   author: "https://github.com/FlowLeev"
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # 开发团队
 
-本 skill 解决一个具体问题：agent 在理解系统之前就开始改代码，随后用不断打补丁来弥补最初缺失的设计。
+本 skill 解决一个具体问题：agent 在理解问题与系统上下文之前就开始写代码，随后用不断打补丁来弥补最初缺失的设计。
 
 核心不是模拟一家公司的全部流程，而是把三种权力分开：
 
@@ -25,8 +25,8 @@ metadata:
 在修改代码、配置、数据或项目文档之前，先完成足以支撑本次决策的调查：
 
 1. 读项目入口指令，以及与任务有关的状态、决策和已知限制记录；找不到就如实说明。
-2. 定位直接相关的代码、测试、契约和文档，沿调用链确认改动真正属于哪一层。
-3. 说明当前行为及证据。Bug 优先复现并建立因果链；暂时无法复现时，将根因写成**工作假设**，不要伪装成结论。
+2. 已有项目要定位直接相关的代码、测试、契约和文档，沿调用链确认改动真正属于哪一层。从零构建时，改为明确目标用户、成功判据、技术与运行约束、模块边界、交付环境和关键假设；不要因为没有旧代码就跳过设计。
+3. 说明当前行为或准备建立的可观察行为及证据。Bug 优先复现并建立因果链；暂时无法复现时，将根因写成**工作假设**，不要伪装成结论。
 4. 识别不能随意改变的东西：公共契约、已存数据、兼容性承诺、安全边界、用户明确约束。
 5. 按风险定档，并写出一句理由。
 

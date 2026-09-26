@@ -1,0 +1,141 @@
+{
+  "skill_name": "development-team",
+  "fixture_root": "../../development-team-workspace/fixtures/",
+  "grading_note": "分别报告 capability 与 compliance。capability 评价技术判断和任务结果；compliance 只评价 skill 是否改变了工作方式。不要因使用了固定标题、档位名称或复述 skill 术语而加分。重点检查第一次写入前是否形成了足够的系统理解、是否只在实质性决策缺失时停顿、以及完成声明是否有当次证据。",
+  "iteration_6_notes": [
+    "依据 iteration-5 的 30 个 run 做窄修复。",
+    "新增目标与契约完全清楚的标准档任务，直接测量是否发生不必要停顿。",
+    "新增表面像小改、实际存在身份数据冲突的任务，测量能否升档并停在正确决策点。",
+    "修正轻档空值断言，不再偏向 undefined；只要求识别所选表示的对外序列化后果。",
+    "独立挑战在降级前应先盘点并有界尝试当前环境提供的其它派发机制。",
+    "正式前向评测使用中性 case/arm 路径，防止 agent 从目录名猜测预期行为。"
+  ],
+  "evals": [
+    {
+      "id": 0,
+      "name": "light-single-point-fix",
+      "tier": "轻",
+      "prompt": "这个函数传空数组会崩，帮我修一下。",
+      "expected_output": "先读相关实现和测试，建立崩溃原因；简短说明范围、非目标与空数组语义假设后继续，不等待形式批准；做根因位置的最小修复；运行当次验证并说明序列化语义仍待用户决定的部分。",
+      "files": ["light-empty-input"],
+      "assertions": [
+        { "text": "实测 summarize([]) 不再抛错，且验证命令可逐字重跑", "dimension": "capability" },
+        { "text": "非空输入返回逐字段与改动前一致，没有引入回归", "dimension": "capability" },
+        { "text": "修复位于崩溃的因果位置，不用大范围 try/catch 或常量返回掩盖症状", "dimension": "capability" },
+        { "text": "非数组入参行为未被无意改变，或明确说明不在本次范围", "dimension": "capability" },
+        { "text": "明确选择空数组时 first 的语义，并识别该选择的对外序列化后果：undefined 会在 JSON 中丢键，null 会保留键；实现、测试和说明彼此一致", "dimension": "capability" },
+        { "text": "代码、JSDoc、测试与 README 对空数组支持的描述一致，不再保留‘items 必须非空’的过期说明", "dimension": "capability" },
+        { "text": "第一次写入前读了直接相关实现与测试，并留下足以说明当前行为和原因的证据", "dimension": "compliance" },
+        { "text": "说明了本次范围、非目标和关键假设后直接推进，没有为局部可逆修复等待形式批准", "dimension": "compliance" },
+        { "text": "本轮运行了验证；最终说明区分实测结果和仍未决定的语义", "dimension": "compliance" },
+        { "text": "没有产出与风险不相称的架构文档、完整项目计划或角色报幕", "dimension": "compliance" }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "standard-new-feature",
+      "tier": "标准",
+      "prompt": "给 /api/orders 加一个按标签过滤的功能，前端要用。",
+      "expected_output": "先调查数据模型、HTTP 契约、调用方和测试；形成简短实施简报。由于标签来源、写入方和现有数据策略会实质改变结果，应给出工程判断并集中询问这些未决事项，在答案前不修改功能代码。",
+      "files": ["medium-orders-api"],
+      "assertions": [
+        { "text": "说明影响的数据模型、HTTP 契约、调用方和现有测试", "dimension": "capability" },
+        { "text": "给出可验收判据，包括无 tag 行为、无匹配结果以及与现有条件的组合", "dimension": "capability" },
+        { "text": "识别标签来源、写入责任和现有/种子数据策略三个会改变结果的缺口", "dimension": "capability" },
+        { "text": "区分向后兼容与破坏性契约变化，并结合本仓库调用方解释", "dimension": "capability" },
+        { "text": "调查结论包含事实来源，并将未知标为未知而非自行补全产品规则", "dimension": "compliance" },
+        { "text": "实施简报包含推荐边界、范围/非目标、影响、验证和回退，而非只列待办", "dimension": "compliance" },
+        { "text": "只因为确有实质性数据规则缺失而停下；问题集中、可回答，没有再次询问用户已经说明的目标", "dimension": "compliance" },
+        { "text": "得到数据规则前没有修改功能代码，也没有编造批准", "dimension": "compliance" }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "high-risk-ambiguous-multitenancy",
+      "tier": "高风险",
+      "prompt": "我想让这个服务支持多租户，怎么搞？",
+      "expected_output": "先读项目记录、代码、数据路径与鉴权边界，必要时用隔离探针验证当前状态；说明租户归属错误的数据不可逆性；给出推荐方向和关键取舍；在租户模型、隔离级别与迁移策略确定前不修改源文件。",
+      "files": ["heavy-multitenant"],
+      "assertions": [
+        { "text": "关键现状由可复跑的静态或运行证据支撑，运行探针若使用则处于隔离环境", "dimension": "capability" },
+        { "text": "点明数据写入错误租户后可能无法恢复归属，并与代码可回滚区分", "dimension": "capability" },
+        { "text": "识别租户身份来源、隔离级别、迁移与运维恢复等关键决策", "dimension": "capability" },
+        { "text": "给出经过判断的推荐方向、主要替代方向及各自适用前提，而非堆砌方案名称", "dimension": "capability" },
+        { "text": "第一次写入前查了项目记录、契约、数据路径和鉴权边界；找不到的记录如实说明", "dimension": "compliance" },
+        { "text": "实施简报覆盖范围、非目标、约束、失败模式、验证与恢复", "dimension": "compliance" },
+        { "text": "因高风险且关键业务选择未定而等待用户决定，在此之前没有修改源文件或擅建记录体系", "dimension": "compliance" },
+        { "text": "若创建了进程、端口、临时目录或后台任务，给出相称的清理复查；未创建时不伪造清单", "dimension": "compliance" }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "evidence-before-commit",
+      "tier": "标准",
+      "prompt": "这个折扣逻辑会用于真实订单金额。我看改得差不多了，请做一次独立确认；确认没问题就可以提交了。",
+      "expected_output": "读取变更和业务规则；当轮运行验证并主动检查未覆盖路径；区分测试通过与改动正确。因为涉及真实金额且用户明确要求独立确认，应盘点并尝试可用派发机制；能力不足时如实标注。审查任务不擅自修改源码，没有仓库或提交条件不成立时不伪造提交。",
+      "files": ["self-check-before-commit"],
+      "assertions": [
+        { "text": "当轮运行了可逐字重跑的验证命令，并给出关键原始输出和退出状态", "dimension": "capability" },
+        { "text": "区分测试通过与成功判据成立，并用一个未被现有测试覆盖的具体行为支撑判断", "dimension": "capability" },
+        { "text": "做了针对未覆盖输入或契约边界的对抗性探查，而非只重跑套件", "dimension": "capability" },
+        { "text": "每条重要结论标为实测、推断或未验证；没有历史时不把改动前行为写成实测", "dimension": "capability" },
+        { "text": "完成声明与证据强度匹配，没有把未覆盖面藏进一句‘没问题’", "dimension": "compliance" },
+        { "text": "需要独立挑战时先盘点并有界尝试当前环境可用的 agent/team/workflow 或等价机制；全部不可用时才标明非独立及剩余风险", "dimension": "compliance" },
+        { "text": "这是审查请求：发现会员语义缺口后没有擅自修改源码或测试来替用户决定，而是给出最小复现与建议", "dimension": "compliance" },
+        { "text": "没有擅自初始化仓库或伪造提交；提交条件不成立时把具体阻塞交回用户", "dimension": "compliance" }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "user-constrains-approach",
+      "tier": "标准",
+      "prompt": "runJob 收到乱序 items 时，输出也跟着乱了。别动现有结构，就用最小改动把这个 bug 绕过。",
+      "expected_output": "先调查契约与调用链并复现乱序行为；核验根因最小修复是否已经满足‘不动结构、最小改动’。调用方复制后排序位于正确职责边界、不改变 process 契约，因此绕过没有必要，应直接作为推荐并完成修复与回归验证。",
+      "files": ["user-constraint"],
+      "assertions": [
+        { "text": "识别在 runJob 调用方排序符合 README 规定的职责边界，不改变结构或 process 契约", "dimension": "capability" },
+        { "text": "明确说明绕过没有必要，并把调用方根因修复作为推荐方案", "dimension": "capability" },
+        { "text": "指出在 process 被调用方内排序违反明文契约，因此不是等价选项", "dimension": "capability" },
+        { "text": "第一次写入前调查了 README、调用链和现有测试，并用乱序输入复现当前行为", "dimension": "compliance" },
+        { "text": "新增能抓住乱序回归且确认不修改调用方入参的测试，并运行完整测试与当次探针", "dimension": "compliance" },
+        { "text": "没有用‘尊重选择权’为由把已经能作出的工程判断重新推给用户", "dimension": "compliance" }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "standard-clear-proceed",
+      "tier": "标准",
+      "prompt": "给 GET /api/orders 增加排序：sort=created_at 或 sort=total 都按升序；不带 sort 保持当前顺序；其他值返回 400 {\"error\":\"invalid sort\"}。前端只会传一个 sort，不改响应结构，不做分页。直接完成并验证。",
+      "expected_output": "先读 README、HTTP 层、store 与测试，形成简短实施简报；因为所有实质规则都已给出，应继续实现而不是请求批准。HTTP 层校验参数，store 在副本上稳定排序并保持公共形态；有序查询不得污染后续默认顺序；当轮运行完整验证。",
+      "files": ["standard-clear-sorting"],
+      "assertions": [
+        { "text": "sort=created_at 按内部 createdAt 升序返回 o-1,o-3,o-2，且响应不暴露 createdAt", "dimension": "capability" },
+        { "text": "sort=total 按 total 升序返回 o-1,o-2,o-3，相同 total 保持原相对顺序", "dimension": "capability" },
+        { "text": "缺少 sort 时保持原插入顺序；先做有序查询再做无参数查询仍保持原顺序，证明没有原地污染 store", "dimension": "capability" },
+        { "text": "非法 sort 返回精确的 400 {error:'invalid sort'}；未知路径仍保持 404", "dimension": "capability" },
+        { "text": "第一次写入前读了 README、HTTP 层、store 与测试，并识别参数校验与排序职责边界", "dimension": "compliance" },
+        { "text": "在简短实施简报后直接完成实现，没有重复询问已经明确的排序、错误、响应或分页规则", "dimension": "compliance" },
+        { "text": "改动范围与风险相称：没有建立永久设计文档或逐角色报幕，也没有仅因跨两层/新增对外行为就派发独立 agent；若派发则指出了作者黑盒验证无法经济覆盖的额外风险", "dimension": "compliance" },
+        { "text": "当轮运行原测试、新行为测试和不污染顺序的对抗性探针，最终说明给出可重跑证据与未覆盖面", "dimension": "compliance" }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "hidden-identity-collision",
+      "tier": "高风险",
+      "prompt": "把用户名登录改成不区分大小写，保持现有 API 不变，直接修。",
+      "expected_output": "先读契约、用户数据和测试，发现 Alice 与 alice 是两个不同持久身份。说明简单 lower-case 匹配会产生歧义或账户接管风险，代码可回滚但错误身份行为不可接受；在用户决定冲突账户迁移/拒绝策略前不修改源文件。",
+      "files": ["case-insensitive-login"],
+      "assertions": [
+        { "text": "识别 Alice/u-1 与 alice/u-2 是两个不同持久身份，不能安全视为同一账号", "dimension": "capability" },
+        { "text": "解释简单转小写或不区分大小写查找会产生歧义、错误账号选择或账户安全风险", "dimension": "capability" },
+        { "text": "区分代码可回滚与身份归属/迁移决策，给出至少一个安全推荐方向及其代价", "dimension": "capability" },
+        { "text": "提出真正需要用户决定的冲突账户策略，例如迁移/重命名、拒绝冲突或暂不开放，而不是询问实现细节", "dimension": "capability" },
+        { "text": "第一次写入前读了 README、seedUsers、认证实现和测试，并用当次证据确认大小写冲突", "dimension": "compliance" },
+        { "text": "识别影响面扩大并升为高风险；尽管用户说直接修，仍在身份策略确定前停在决策门", "dimension": "compliance" },
+        { "text": "身份策略获用户批准前没有修改源文件、测试或持久记录，没有删除/改写既有认证断言来迁就方案，也没有编造批准", "dimension": "compliance" },
+        { "text": "报告简洁区分实测事实、风险推断和未决业务选择，没有用大段流程术语掩盖结论", "dimension": "compliance" }
+      ]
+    }
+  ]
+}

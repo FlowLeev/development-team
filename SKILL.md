@@ -1,11 +1,11 @@
 ---
 name: development-team
-description: "Guides non-trivial software creation and change with deliberate design and evidence-based verification. Use when starting a new project or service, or implementing features, bug fixes, refactors, migrations, integrations, or configuration changes that affect behavior, contracts, data, or multiple modules. Do not use for read-only explanation, standalone review, or mechanical edits."
+description: "Guides non-trivial software creation and change with deliberate design and evidence-based verification. Use when starting or resuming a long-running project or service, implementing features, bug fixes, refactors, migrations, integrations, or configuration changes that affect behavior, contracts, data, or multiple modules, or preparing a production or public release. Do not use for read-only explanation, standalone review, or mechanical edits."
 license: MIT
 compatibility: "Designed for coding agents that support Agent Skills and can inspect project files, edit code, and run verification commands."
 metadata:
   author: "https://github.com/FlowLeev"
-  version: "1.1.1"
+  version: "1.2.0"
 ---
 
 # 开发团队
@@ -110,16 +110,27 @@ metadata:
 
 实验优先使用进程内探针或隔离临时环境。不要在用户正在使用的环境里起第二个实例、改真实数据或占默认端口。结束时核对本次实际创建的进程、端口、临时目录和后台任务；没有创建的资源不必做形式化清单。
 
+## 生命周期治理按条件触发
+
+生命周期治理不是第九个角色，也不是第四道门。只有它能改变当前设计、交接或发布判断时才加载：
+
+- **长期或复杂的新项目**：预计跨会话、多人维护、多模块、存在外部契约、持久数据或明显风险时，读 `references/philosophy/lens-index.md`，按信号选择少量相关镜头。一次性脚本、小型工具和可逆原型不自动扫描原则库。
+- **跨会话工作或恢复长期项目**：读 `references/project-memory.md`，优先恢复项目已有的状态、决定、限制和 issue；不要因为“恢复工作”就建立新的治理文档。
+- **真实发布或部署准备**：读 `references/lifecycle-governance.md`，按发布风险检查设计漂移、阻塞项、迁移、回退、可观测性和证据新鲜度。仅改版本号或整理本地提交不自动触发完整发布检查。
+
+评审深度由工程方按风险选择。只有评审会显著扩大用户要求的范围、成本、交付物或外部动作时才询问用户；不要让用户批准“轻量、标准或高保证”这类内部流程标签。
+
 ## 项目记录：只保存未来无法重建的意图
 
 先遵循项目已有位置，不要擅自建立一套文档体系。以下内容在对未来工作有价值时应持久化：
 
 - 会约束后续设计的架构决定及其理由。
 - 跨会话的进行中状态、阻塞与下一步。
+- 无法在当前会话完成、且没有其他可靠跟踪系统承载的 TODO 与验收条件。
 - 迁移、运行、回滚、安全和兼容性约束。
 - 重要的已知限制与未覆盖风险。
 
-代码、测试、提交和可重跑输出能够重建的事实不必重复抄写。轻档通常只需在最终交付中说明；不要为一次局部修复制造永久文档。若项目没有记录约定，只有在确有持续维护价值时才提议布局并请求同意。
+代码、测试、提交和可重跑输出能够重建的事实不必重复抄写。轻档通常只需在最终交付中说明；不要为一次局部修复制造永久文档。若项目没有记录约定，只有在确有持续维护价值时才按 `references/project-memory.md` 提议最小布局并请求同意。
 
 ## 用户在主窗口看到什么
 
@@ -158,4 +169,6 @@ metadata:
 - 完成声明是否有本轮证据，且明确区分实测、推断与未验证？
 - 独立挑战是否与风险相称，来源是否说清？
 - 实际创建的临时资源是否已回收？
+- 若工作确实跨会话，状态、TODO、待决事项和下一入口是否仍可追踪？
+- 若正在准备真实发布或部署，设计漂移、阻塞项、已知限制、迁移与回退是否已按风险核对？
 - 最终说明是否让用户知道改了什么、如何验证、剩余风险和如何回退？

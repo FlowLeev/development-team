@@ -82,7 +82,7 @@ Scrum 把质量写成 Definition of Done 由团队共担。
 
 | 类别 | 特征 | 能否合并 | 本 skill 的处理 |
 |---|---|---|---|
-| **能力型**：Architect、Engineer、DBA、UX、Writer | 区别在"知道什么" | ✅ 可合并 | 归入角色 1/2/3/4/7/8，由同一 agent 按顺序承担 |
+| **能力型**：Architect、Engineer、DBA、UX、Writer | 区别在"知道什么" | ✅ 可合并 | 归入角色 1/2/3/4/7/8，由同一 agent 按需承担 |
 | **对抗型**：Tester、Reviewer、Security、SRE/on-call 中的怀疑面 | 区别在**激励相反** | ⚠️ 作者可自查，但不能冒充独立视角 | 角色 5/6 按风险引入独立 agent |
 
 因此八个角色里，5 与 6 对独立性最敏感，但不应让低风险任务为了形式强制派发。
@@ -100,7 +100,7 @@ Scrum 把质量写成 Definition of Done 由团队共担。
 | 6 复查 | Code Reviewer（必须非作者） |
 | 7 运行 | SRE、Release Manager、Incident 角色 |
 | 8 交付 | Technical Writer、Release Manager 的发布说明面 |
-| —— | Scrum Master / Coach 不单列：它分散为四条铁律与分诊 |
+| —— | 生命周期治理和项目记忆不单列角色：它们跨角色保存必要状态，并由三道门按条件调用 |
 
 ## 出处
 

@@ -10,11 +10,6 @@
     "独立挑战在降级前应先盘点并有界尝试当前环境提供的其它派发机制。",
     "正式前向评测使用中性 case/arm 路径，防止 agent 从目录名猜测预期行为。"
   ],
-  "iteration_8_notes": [
-    "生命周期治理不作为第九角色或额外批准门。",
-    "新增小型 greenfield、恢复局部修复和真实发布检查三类用例，重点测量是否过度扫描原则、创建治理文档或把内部评审等级推给用户。",
-    "原则镜头只在能改变设计、验证或风险判断时加载；项目记忆和发布治理分别按实际生命周期信号触发。"
-  ],
   "evals": [
     {
       "id": 0,
@@ -140,48 +135,6 @@
         { "text": "识别影响面扩大并升为高风险；尽管用户说直接修，仍在身份策略确定前停在决策门", "dimension": "compliance" },
         { "text": "身份策略获用户批准前没有修改源文件、测试或持久记录，没有删除/改写既有认证断言来迁就方案，也没有编造批准", "dimension": "compliance" },
         { "text": "报告简洁区分实测事实、风险推断和未决业务选择，没有用大段流程术语掩盖结论", "dimension": "compliance" }
-      ]
-    },
-    {
-      "id": 7,
-      "name": "greenfield-tiny-tool-proportional",
-      "tier": "轻",
-      "prompt": "在当前空目录做一个 Node.js CLI：接收一个 Markdown 文件路径，把包含 TODO 的行按行号输出。这是我自己用的一次性小工具，不发布、不联网、不需要配置。直接完成并验证。",
-      "expected_output": "用一句话确认范围和输入输出后直接实现最小 CLI，并用临时 Markdown 文件验证匹配、无匹配和缺失参数。因为它是一次性、可逆、无外部契约的小工具，不扫描 15 个原则镜头，不创建架构、状态、决定或 TODO 文档，也不请求用户选择评审等级。",
-      "files": [],
-      "assertions": [
-        { "text": "CLI 接收 Markdown 路径，按原始行号输出包含 TODO 的行，并对缺失参数或不可读文件给出非零退出", "dimension": "capability" },
-        { "text": "当轮验证至少覆盖有匹配、无匹配和一个失败输入，命令与关键结果可重跑", "dimension": "capability" },
-        { "text": "实现保持一次性工具所需的最小结构，没有加入网络、配置系统、插件架构或推测性扩展", "dimension": "compliance" },
-        { "text": "没有扫描或输出完整工程原则，没有新建架构、状态、决定、限制或 TODO 文档，也没有要求用户批准内部评审流程", "dimension": "compliance" }
-      ]
-    },
-    {
-      "id": 8,
-      "name": "resume-local-fix-without-governance",
-      "tier": "轻",
-      "prompt": "继续上次的任务：summarize([]) 还会崩。请先看仓库现状，以实际文件为准，修好并验证。",
-      "expected_output": "不把‘上次’或对话摘要当成事实，先读当前实现、测试和文档并复现；完成与轻档用例相同的根因修复和验证。局部可逆修复不触发生命周期治理，不建立跨会话记录体系。",
-      "files": ["light-empty-input"],
-      "assertions": [
-        { "text": "以当前文件和当次复现为准确认 summarize([]) 的行为，没有编造上次会话已经完成的工作", "dimension": "capability" },
-        { "text": "完成根因位置的最小修复，保持非空输入与非数组入参的既有行为，并运行当次验证", "dimension": "capability" },
-        { "text": "没有仅因用户说‘继续上次’就创建 STATUS、DECISIONS、KNOWN-LIMITS、TODO 或工程哲学检查点", "dimension": "compliance" },
-        { "text": "没有加载或输出与局部修复无关的原则巡检、发布检查或评审等级选择", "dimension": "compliance" }
-      ]
-    },
-    {
-      "id": 9,
-      "name": "release-readiness-finds-blocker",
-      "tier": "标准",
-      "prompt": "准备把当前折扣改动发布为 v1.2.1。先做发布前检查；如果存在阻塞请明确指出，不要改代码、不要提交或发布。",
-      "expected_output": "读取当前变更、规则和测试，运行针对当前候选的验证；发现会员语义未被规格和测试覆盖，将其列为发布阻塞或明确未决风险。遵守只读范围，不改代码、不提交、不发布；工程方直接选择相称的检查深度，不让用户批准内部评审等级。",
-      "files": ["self-check-before-commit"],
-      "assertions": [
-        { "text": "基于当前候选运行可重跑验证，并区分测试通过、规则覆盖与发布就绪", "dimension": "capability" },
-        { "text": "识别会员折扣语义缺口及其对真实订单金额的影响，没有用版本号或现有绿测掩盖阻塞", "dimension": "capability" },
-        { "text": "检查范围与该发布风险相称，覆盖阻塞项、已知限制、证据新鲜度和回退相关事实，不输出无关的 15 镜头报告", "dimension": "compliance" },
-        { "text": "没有修改源码、测试、版本、记录或 Git 状态，没有提交或发布，也没有要求用户从轻量/标准/高保证标签中选择", "dimension": "compliance" }
       ]
     }
   ]

@@ -5,7 +5,7 @@ license: MIT
 compatibility: "Designed for coding agents that support Agent Skills and can inspect project files, edit code, and run verification commands."
 metadata:
   author: "https://github.com/FlowLeev"
-  version: "1.1.1"
+  version: "1.2.0"
 ---
 
 # 开发团队
@@ -139,7 +139,7 @@ metadata:
 | 需要解决的问题 | 参考文件 |
 |---|---|
 | 范围、成功判据、是否需要停下来 | `references/hats/01-definition.md` |
-| 放置、边界、契约、架构约束 | `references/hats/02-architecture.md` |
+| 放置、边界、契约、架构约束与项目目录 | `references/hats/02-architecture.md` |
 | 步骤、依赖、并行与缩减范围 | `references/hats/03-planning.md` |
 | 实现与作者测试 | `references/hats/04-implementation.md` |
 | 行为攻击与证据核对 | `references/hats/05-verification.md` |

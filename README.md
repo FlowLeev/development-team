@@ -48,6 +48,7 @@ development-team/
 ├── references/
 │   ├── sizing.md           # 风险分档
 │   ├── roles-map.md        # 角色来源与边界
+│   ├── project-structure.md # 项目目录与代码放置
 │   └── hats/               # 八个按需角色
 └── evals/evals.json        # 行为评测用例
 ```

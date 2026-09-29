@@ -2,10 +2,10 @@
 name: development-team
 description: "Guides non-trivial software creation and change with deliberate design and evidence-based verification. Use when starting a new project or service, or implementing features, bug fixes, refactors, migrations, integrations, or configuration changes that affect behavior, contracts, data, or multiple modules. Do not use for read-only explanation, standalone review, or mechanical edits."
 license: MIT
-compatibility: "Designed for coding agents that support Agent Skills and can inspect project files, edit code, and run verification commands."
+compatibility: "Designed for coding agents that support Agent Skills and can inspect project files, edit code, and run verification commands. User-experience validation additionally requires independent subagents and isolated test environments."
 metadata:
   author: "https://github.com/FlowLeev"
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # 开发团队
@@ -18,7 +18,7 @@ metadata:
 - **实现权**：工程方判断技术做法并完成改动。
 - **对抗权**：验证者尝试推翻实现者的结论。
 
-实际工作只经过三道门：**理解 → 决策 → 证据**。八个角色是按需读取的方法库，不是每次都要表演一遍的仪式。
+实际工作只经过三道门：**理解 → 决策 → 证据**。九个角色是按需读取的方法库，不是每次都要表演一遍的仪式。
 
 ## 第一门：理解——第一次写入前
 
@@ -104,6 +104,16 @@ metadata:
 
 复查实现时读 `references/hats/06-review.md`。逐条处理意见：采纳，或说明驳回依据；修改后重跑受影响的验证。
 
+### 用户体验验收
+
+实现面向最终用户的产品、工具或用户流程后，在完成声明前读 `references/hats/09-user-experience.md`，并让至少两个未参与开发、彼此独立的用户子 agent 实际完成代表性任务。这不是代码审查：用户 agent 只能使用产品公开暴露的 UI、CLI、API、插件或工具以及面向用户的说明，不得读取源码、调用内部函数、访问数据库、测试钩子、私有接口或开发日志。
+
+每个用户 agent 使用不继承实现过程的新上下文和独立测试环境，只得到一种代表性用户身份、要完成的目标、安全的测试数据和公开入口；不要预先告诉它正确操作步骤。根据真实受众选择不同经验水平或任务，不要让多个 agent 机械重复同一脚本。独立环境至少要隔离会影响体验的账号、租户、数据、配置、缓存和文件状态，不能复用开发者已经调试过的现场。
+
+用户 agent 反馈任务是否完成，以及发现入口、理解参数、操作步骤、结果反馈、错误提示和失败恢复是否清楚。开发方汇总可复现的问题，区分阻塞、明显摩擦和主观偏好；修复属于已定产品目标的问题后，用新的用户 agent 复测受影响流程，避免已学会正确路径的 agent 掩盖可发现性问题。
+
+没有安全可用的产品入口、独立测试环境，或当前环境无法派发至少两个隔离的子 agent 时，不得用开发者自测冒充用户体验验收；将这一项标为**未验证**并说明限制。纯内部库、无用户入口的基础设施改动或机械编辑不虚构用户角色。
+
 ## 运行角色按影响触发
 
 不要把“运行”只绑定到档位。只要改动影响部署、配置、后台任务、端口、持久化数据、监控或故障恢复，就读 `references/hats/07-operations.md`，无论它被分为哪一档。
@@ -146,6 +156,7 @@ metadata:
 | 正确性、可维护性与一致性复查 | `references/hats/06-review.md` |
 | 部署、可观测性、回滚与资源清理 | `references/hats/07-operations.md` |
 | 面向用户和维护者的交付说明 | `references/hats/08-delivery.md` |
+| 公开工具是否易发现、易使用并可从错误中恢复 | `references/hats/09-user-experience.md` |
 
 角色来源与划分见 `references/roles-map.md`。
 
@@ -157,5 +168,6 @@ metadata:
 - 是否存在超出实施简报的改动？
 - 完成声明是否有本轮证据，且明确区分实测、推断与未验证？
 - 独立挑战是否与风险相称，来源是否说清？
+- 面向用户的产品或流程是否经过多个纯黑盒用户 agent 体验；修复后是否由新用户复测？
 - 实际创建的临时资源是否已回收？
 - 最终说明是否让用户知道改了什么、如何验证、剩余风险和如何回退？

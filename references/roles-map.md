@@ -1,6 +1,6 @@
 # 角色全景与出处
 
-这份文件回答两个问题：**一个开发团队有哪些角色**，以及**本 skill 的八个角色为什么这样划分**。
+这份文件回答两个问题：**一个开发团队有哪些角色**，以及**本 skill 的九个角色为什么这样划分**。
 
 角色划分不是凭感觉编的。下面的每一条都取自被行业认可的实践，出处附在文末。
 
@@ -14,6 +14,7 @@
 | Customer | 提需求、定优先级、**验收** | XP：要求"始终在场"，**是团队成员** |
 | Shaper | 划定问题范围、定 appetite（愿意花多少时间） | Shape Up |
 | UX / Designer | 交互与视觉 | Shape Up 的固定成员；Google 团队常见 |
+| End User / Usability Participant | 只通过公开产品入口完成真实任务，暴露可发现性、操作成本和恢复问题 | W3C WAI 的用户参与评估实践 |
 | BA / SME | 需求细化、领域知识 | 通识，最小团队里被前几者吸收 |
 
 ### 结构与技术方向 —— 怎么做、边界在哪
@@ -76,19 +77,22 @@ Scrum 把质量写成 Definition of Done 由团队共担。
 共同的判断不是“作者证据一律无效”，而是：作者测试能证明已观察到的行为，
 却不能证明作者没有遗漏；风险越高，越需要非作者视角。
 
-## 三、从角色到本 skill 的八个角色
+## 三、从角色到本 skill 的九个角色
 
-按"能否合并"分两类，这是划分的核心依据：
+按角色所需视角分三类，这是划分的核心依据：
 
 | 类别 | 特征 | 能否合并 | 本 skill 的处理 |
 |---|---|---|---|
 | **能力型**：Architect、Engineer、DBA、UX、Writer | 区别在"知道什么" | ✅ 可合并 | 归入角色 1/2/3/4/7/8，由同一 agent 按顺序承担 |
 | **对抗型**：Tester、Reviewer、Security、SRE/on-call 中的怀疑面 | 区别在**激励相反** | ⚠️ 作者可自查，但不能冒充独立视角 | 角色 5/6 按风险引入独立 agent |
+| **体验型**：最终用户、可用性测试参与者 | 实现知识会污染发现过程 | ❌ 不能由开发者扮演 | 角色 9 使用多个新上下文的用户 agent，只接触公开产品入口 |
 
-因此八个角色里，5 与 6 对独立性最敏感，但不应让低风险任务为了形式强制派发。
+因此九个角色里，5 与 6 对独立性最敏感，但不应让低风险任务为了形式强制派发。
 轻档允许作者自查；标准档在契约、共享状态或共同盲点明显时使用一个独立挑战者；
 高风险档在环境支持时要求独立验证与复查。角色 1 的独立性不同——它要求把业务定义权
-交给用户，同时保留工程方应承担的技术判断。
+交给用户，同时保留工程方应承担的技术判断。角色 9 也不同：它不是寻找实现缺陷，而是
+观察一个不知道内部结构的人能否只靠公开工具顺利完成目标。面向用户的产品实现后，应由
+至少两个彼此独立的用户 agent 体验；开发者、验证者或已读过源码的 agent 不能替代。
 
 | 本 skill 的角色 | 吸收了哪些职能 |
 |---|---|
@@ -100,6 +104,7 @@ Scrum 把质量写成 Definition of Done 由团队共担。
 | 6 复查 | Code Reviewer（必须非作者） |
 | 7 运行 | SRE、Release Manager、Incident 角色 |
 | 8 交付 | Technical Writer、Release Manager 的发布说明面 |
+| 9 用户体验 | End User、Usability Testing Participant；只操作公开产品入口 |
 | —— | Scrum Master / Coach 不单列：它分散为四条铁律与分诊 |
 
 ## 出处
@@ -112,6 +117,7 @@ Scrum 把质量写成 Definition of Done 由团队共担。
 - Google SRE Book（可观测性、Toil、复盘）：<https://sre.google/sre-book/table-of-contents/>
 - Michael Nygard, *Documenting Architecture Decisions*：<https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions>
 - ISTQB Certified Tester Foundation Level Syllabus（测试原则）：<https://istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/>
+- W3C WAI, *Involving Users in Evaluating Web Accessibility*：<https://www.w3.org/WAI/test-evaluate/involving-users/>
 - SFDIPOT：James Bach 的 Heuristic Test Strategy Model
 - Semantic Versioning：<https://semver.org/>
 

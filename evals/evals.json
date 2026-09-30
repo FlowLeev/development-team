@@ -1,7 +1,14 @@
 {
   "skill_name": "development-team",
   "fixture_root": "../../development-team-workspace/fixtures/",
-  "grading_note": "分别报告 capability 与 compliance。capability 评价技术判断和任务结果；compliance 只评价 skill 是否改变了工作方式。不要因使用了固定标题、档位名称或复述 skill 术语而加分。重点检查第一次写入前是否形成了足够的系统理解、是否只在实质性决策缺失时停顿、以及完成声明是否有当次证据。",
+  "grading_note": "分别报告 capability 与 compliance。capability 评价技术判断和任务结果；compliance 只评价 skill 是否改变了工作方式。不要因使用了固定标题、档位名称或复述 skill 术语而加分。重点检查调查与风险是否相称：清晰、局部、可逆的任务应只加载实现所需上下文，不为形式读取或表演其他角色；只有出现具体触发条件才增量加载。还要检查是否只在实质性决策缺失时停顿，以及完成声明是否有当次证据。",
+  "iteration_7_notes": [
+    "把适用范围扩大到所有代码开发，但用直接实现路径保证最小加载。",
+    "清晰、局部、可逆且不触及契约、数据、安全、运行或用户取舍的任务，只加载实现角色。",
+    "其他角色按事实触发增量加载；上下文压缩后重读主 skill，不自动重读全部 references。",
+    "用户体验并入验证角色，仅在新增用户流程或公开工具体验发生实质变化时加载纯黑盒子模式。",
+    "评测既要处罚调查不足，也要处罚与风险不相称的角色加载、文档和 agent 派发。"
+  ],
   "iteration_6_notes": [
     "依据 iteration-5 的 30 个 run 做窄修复。",
     "新增目标与契约完全清楚的标准档任务，直接测量是否发生不必要停顿。",
@@ -28,7 +35,7 @@
         { "text": "第一次写入前读了直接相关实现与测试，并留下足以说明当前行为和原因的证据", "dimension": "compliance" },
         { "text": "说明了本次范围、非目标和关键假设后直接推进，没有为局部可逆修复等待形式批准", "dimension": "compliance" },
         { "text": "本轮运行了验证；最终说明区分实测结果和仍未决定的语义", "dimension": "compliance" },
-        { "text": "没有产出与风险不相称的架构文档、完整项目计划或角色报幕", "dimension": "compliance" }
+        { "text": "只加载实现所需上下文；没有为流程读取或表演定义、架构、计划、独立验证、复查、运行或交付角色，也没有产出与风险不相称的文档", "dimension": "compliance" }
       ]
     },
     {
@@ -115,7 +122,7 @@
         { "text": "非法 sort 返回精确的 400 {error:'invalid sort'}；未知路径仍保持 404", "dimension": "capability" },
         { "text": "第一次写入前读了 README、HTTP 层、store 与测试，并识别参数校验与排序职责边界", "dimension": "compliance" },
         { "text": "在简短实施简报后直接完成实现，没有重复询问已经明确的排序、错误、响应或分页规则", "dimension": "compliance" },
-        { "text": "改动范围与风险相称：没有建立永久设计文档或逐角色报幕，也没有仅因跨两层/新增对外行为就派发独立 agent；若派发则指出了作者黑盒验证无法经济覆盖的额外风险", "dimension": "compliance" },
+        { "text": "改动范围与风险相称：没有建立永久设计文档或逐角色报幕，也没有仅因跨两层、新增一个契约明确的 API 参数或‘对外’二字就派发独立挑战者或用户 agent；若派发则指出了作者黑盒验证无法经济覆盖的额外风险", "dimension": "compliance" },
         { "text": "当轮运行原测试、新行为测试和不污染顺序的对抗性探针，最终说明给出可重跑证据与未覆盖面", "dimension": "compliance" }
       ]
     },

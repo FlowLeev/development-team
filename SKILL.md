@@ -1,16 +1,16 @@
 ---
 name: development-team
-description: "Guides non-trivial software creation and change with deliberate design and evidence-based verification. Use when starting a new project or service, or implementing features, bug fixes, refactors, migrations, integrations, or configuration changes that affect behavior, contracts, data, or multiple modules. Do not use for read-only explanation, standalone review, or mechanical edits."
+description: "Guides every software-development task that creates or changes code, tests, scripts, or project/build/runtime configuration. For clear, local, reversible work, load only implementation guidance; add other roles only when their trigger appears. After context compaction or summary recovery, invoke this skill again before continuing. Do not use for read-only explanation or standalone review with no implementation."
 license: MIT
 compatibility: "Designed for coding agents that support Agent Skills and can inspect project files, edit code, and run verification commands. User-experience validation additionally requires independent subagents and isolated test environments."
 metadata:
   author: "https://github.com/FlowLeev"
-  version: "1.3.0"
+  version: "1.5.0"
 ---
 
 # 开发团队
 
-本 skill 解决一个具体问题：agent 在理解问题与系统上下文之前就开始写代码，随后用不断打补丁来弥补最初缺失的设计。
+本 skill 适用于所有实际创建或修改代码的开发任务。它解决一个具体问题：agent 在理解问题与系统上下文之前就开始写代码，随后用不断打补丁来弥补最初缺失的设计。流程投入由内部风险分档决定；适用范围广不代表每次都走重流程。
 
 核心不是模拟一家公司的全部流程，而是把三种权力分开：
 
@@ -18,11 +18,32 @@ metadata:
 - **实现权**：工程方判断技术做法并完成改动。
 - **对抗权**：验证者尝试推翻实现者的结论。
 
-实际工作只经过三道门：**理解 → 决策 → 证据**。九个角色是按需读取的方法库，不是每次都要表演一遍的仪式。
+实际工作只经过三道门：**理解 → 决策 → 证据**。八个角色是按需读取的方法库，不是每次都要表演一遍的仪式。
+
+## 上下文压缩后的恢复
+
+如果会话刚发生上下文压缩、由压缩摘要恢复，或无法确认本 skill 的完整规则仍在当前上下文中，继续任何代码写入前必须再次调用并完整读取本 `SKILL.md`。压缩摘要只能作为定位线索，不能替代 skill 原文。
+
+重读主文件后，只加载当前阶段实际需要的 references，并从项目文件、版本状态、测试和持久记录核对当前事实。不要因为恢复上下文而重复已经完成的提交、发布、迁移或其他外部副作用。
+
+## 最小加载原则
+
+不要预先读取全部 references。满足以下条件时走**直接实现路径**：
+
+- 用户目标和可观察结果已经清楚；
+- 改动位置与职责边界已知，或读目标代码后即可确定；
+- 改动局部、可逆，不改变公共契约、已存数据、安全边界或运行方式；
+- 没有需要用户决定的产品、成本或兼容性取舍。
+
+直接实现路径只读取 `references/hats/04-implementation.md`，然后调查直接相关代码与测试、完成最小改动并做当次自验证。不要加载定义、架构、计划、验证、复查、运行或交付角色，也不要读取 `references/sizing.md`，除非调查发现上面的条件并不成立。
+
+其他任务先读 `references/sizing.md`，再只加载被当前问题触发的角色文件。过程中出现新的歧义、边界、共享状态、用户体验或运行风险时，再增量加载对应角色；不要为了“可能有用”一次性加载。
 
 ## 第一门：理解——第一次写入前
 
-在修改代码、配置、数据或项目文档之前，先完成足以支撑本次决策的调查：
+直接实现路径在第一次写入前只需读取适用的项目指令、目标代码及邻近测试，确认当前与预期行为，并用一句话说明范围和关键假设；不要求完整调用链、实施简报或架构文档。
+
+不满足直接实现条件时，完成足以支撑本次决策的调查：
 
 1. 读项目入口指令，以及与任务有关的状态、决策和已知限制记录；找不到就如实说明。
 2. 已有项目要定位直接相关的代码、测试、契约和文档，沿调用链确认改动真正属于哪一层。从零构建时，改为明确目标用户、成功判据、技术与运行约束、模块边界、交付环境和关键假设；不要因为没有旧代码就跳过设计。
@@ -30,7 +51,7 @@ metadata:
 4. 识别不能随意改变的东西：公共契约、已存数据、兼容性承诺、安全边界、用户明确约束。
 5. 按风险定档，并写出一句理由。
 
-调查应与风险成比例。明显的拼写、格式或机械更新不需要虚构“根因分析”；涉及行为的修复不能只根据报错表面猜测。
+调查应与风险成比例。拼写、格式化、明确的机械代码编辑通常走直接实现路径，不需要虚构根因、调用链或设计文档。涉及行为的修复不能只根据报错表面猜测。
 
 细则见 `references/sizing.md`。分诊拿不准时读它，不要默认加载全部角色文件。
 
@@ -44,7 +65,7 @@ metadata:
 
 ## 第二门：决策——形成实施简报
 
-轻档只需说明：**做什么、不做什么、替用户作了什么假设**，然后继续。
+直接实现路径和其他轻档只需说明：**做什么、不做什么、替用户作了什么假设**，然后继续。
 
 标准档和高风险档形成一份短实施简报。只写影响决策的内容：
 
@@ -90,7 +111,7 @@ metadata:
 - **推断**：由代码或资料推导，未直接运行验证。
 - **未验证**：缺少环境、权限、数据或时间。
 
-验证不是把测试套件再跑一遍。先核对成功判据，再选择最可能推翻实现的攻击面；按改动裁剪 Structure / Function / Data / Interfaces / Platform / Operations / Time，不要求每个任务机械覆盖七项。详情见 `references/hats/05-verification.md`。
+验证不是把测试套件再跑一遍。直接实现路径由作者针对成功判据做最小自验证，并检查一个最可能失败的边界，不必加载验证角色。需要系统性攻击、独立挑战，或改动实质影响公开工具的发现、任务完成与失败恢复体验时，才读 `references/hats/05-verification.md`。
 
 ### 独立挑战如何使用
 
@@ -104,15 +125,7 @@ metadata:
 
 复查实现时读 `references/hats/06-review.md`。逐条处理意见：采纳，或说明驳回依据；修改后重跑受影响的验证。
 
-### 用户体验验收
-
-实现面向最终用户的产品、工具或用户流程后，在完成声明前读 `references/hats/09-user-experience.md`，并让至少两个未参与开发、彼此独立的用户子 agent 实际完成代表性任务。这不是代码审查：用户 agent 只能使用产品公开暴露的 UI、CLI、API、插件或工具以及面向用户的说明，不得读取源码、调用内部函数、访问数据库、测试钩子、私有接口或开发日志。
-
-每个用户 agent 使用不继承实现过程的新上下文和独立测试环境，只得到一种代表性用户身份、要完成的目标、安全的测试数据和公开入口；不要预先告诉它正确操作步骤。根据真实受众选择不同经验水平或任务，不要让多个 agent 机械重复同一脚本。独立环境至少要隔离会影响体验的账号、租户、数据、配置、缓存和文件状态，不能复用开发者已经调试过的现场。
-
-用户 agent 反馈任务是否完成，以及发现入口、理解参数、操作步骤、结果反馈、错误提示和失败恢复是否清楚。开发方汇总可复现的问题，区分阻塞、明显摩擦和主观偏好；修复属于已定产品目标的问题后，用新的用户 agent 复测受影响流程，避免已学会正确路径的 agent 掩盖可发现性问题。
-
-没有安全可用的产品入口、独立测试环境，或当前环境无法派发至少两个隔离的子 agent 时，不得用开发者自测冒充用户体验验收；将这一项标为**未验证**并说明限制。纯内部库、无用户入口的基础设施改动或机械编辑不虚构用户角色。
+公开工具体验属于验证角色的纯黑盒子模式，不再是独立角色。只有新增完整用户流程，或改动实质影响用户入口、操作步骤、反馈理解与失败恢复时才启用；单个参数或字段的契约已明确且不改变完整任务路径时，仅做相称的公开接口黑盒验证，不自动派发用户 agent。内部实现、无用户入口的基础设施，以及不影响任务完成的文案或外观小改不加载该模式。具体路由由验证角色决定。
 
 ## 运行角色按影响触发
 
@@ -152,11 +165,10 @@ metadata:
 | 放置、边界、契约、架构约束与项目目录 | `references/hats/02-architecture.md` |
 | 步骤、依赖、并行与缩减范围 | `references/hats/03-planning.md` |
 | 实现与作者测试 | `references/hats/04-implementation.md` |
-| 行为攻击与证据核对 | `references/hats/05-verification.md` |
+| 行为攻击、证据核对与公开工具体验 | `references/hats/05-verification.md` |
 | 正确性、可维护性与一致性复查 | `references/hats/06-review.md` |
 | 部署、可观测性、回滚与资源清理 | `references/hats/07-operations.md` |
 | 面向用户和维护者的交付说明 | `references/hats/08-delivery.md` |
-| 公开工具是否易发现、易使用并可从错误中恢复 | `references/hats/09-user-experience.md` |
 
 角色来源与划分见 `references/roles-map.md`。
 
@@ -168,6 +180,6 @@ metadata:
 - 是否存在超出实施简报的改动？
 - 完成声明是否有本轮证据，且明确区分实测、推断与未验证？
 - 独立挑战是否与风险相称，来源是否说清？
-- 面向用户的产品或流程是否经过多个纯黑盒用户 agent 体验；修复后是否由新用户复测？
+- 若改动影响公开工具体验，是否按验证角色的纯黑盒模式体验并复测？
 - 实际创建的临时资源是否已回收？
 - 最终说明是否让用户知道改了什么、如何验证、剩余风险和如何回退？
